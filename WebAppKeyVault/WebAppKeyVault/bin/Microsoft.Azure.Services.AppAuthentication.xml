@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Azure.Services.AppAuthentication</name>
+    </assembly>
+    <members>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.AccessTokenCache.Clear">
+            <summary>
+            This is for unit testing
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider">
+            <summary>
+            This class should be used by services to get access tokens to authenticate to Azure services using the developer's (Azure AD/ Microsoft) account during development, and using the app's identity (using OAuth 2.0 Client Credentials flow) when deployed to Azure.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider.TokenCallback">
+            <summary>
+            Token callback for Key Vault. 
+            </summary>
+            <param name="authority"></param>
+            <param name="resource"></param>
+            <param name="scope"></param>
+        </member>
+        <member name="P:Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider.KeyVaultTokenCallback">
+            <summary>
+            Property to get authentication callback to be used with KeyVaultClient.  
+            </summary>
+            <example>
+            <code>
+            KeyVaultClient keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+            </code>
+            </example>
+        </member>
+        <member name="P:Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider.PrincipalUsed">
+            <summary>
+            The principal used to acquire token.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider.#ctor(System.String,System.String)">
+            <summary>
+            Creates an instance of the AzureServiceTokenProvider class. 
+            </summary>
+            <exception cref="T:System.FormatException">Thrown when connection string is not in correct format</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when azureAdInstance is null or empty</exception>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider.#ctor(Microsoft.Azure.Services.AppAuthentication.NonInteractiveAzureServiceTokenProviderBase)">
+            <summary>
+            This method is for testing only
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider.#ctor(System.Collections.Generic.List{Microsoft.Azure.Services.AppAuthentication.NonInteractiveAzureServiceTokenProviderBase})">
+            <summary>
+            This method is for testing only
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider.GetAccessTokenAsync(System.String,System.String)">
+            <summary>
+            Returns an access token to access the given Azure resource. 
+            </summary>
+            <example>
+            <code>
+            var azureServiceTokenProvider = new AzureServiceTokenProvider();
+            string accessToken = await azureServiceTokenProvider.GetAccessTokenAsync("https://management.azure.com/");
+            </code>
+            </example>
+            <param name="resource">Resource to access. This must be the resource Id of an Azure service e.g. https://management.azure.com/.</param>
+            <param name="tenantId"></param>
+            <returns>Access token</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if resource is null or empty.</exception>
+            <exception cref="T:Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProviderException">Thrown if access token cannot be acquired.</exception>
+        </member>
+        <member name="T:Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProviderException">
+            <summary>
+            Instance of this exception is thrown if access token cannot be acquired. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProviderException.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Creates an instance of AzureServiceTokenProviderException. 
+            </summary>
+            <param name="connectionString">Connection string used.</param>
+            <param name="resource">Resource for which token was expected.</param>
+            <param name="authority">Authority for which token was expected.</param>
+            <param name="message">Reason why token could not be acquired.</param>
+        </member>
+        <member name="T:Microsoft.Azure.Services.AppAuthentication.CertificateHelper">
+            <summary>
+            Helper class to get certificates.  
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.CertificateHelper.GetCertificates(System.String,System.Boolean,System.Security.Cryptography.X509Certificates.StoreLocation)">
+            <summary>
+            Get certificates from cert store
+            </summary>
+            <param name="isThumbprint"></param>
+            <param name="location"></param>
+            <param name="subjectNameOrThumbprint"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.Azure.Services.AppAuthentication.ClientCertificateAzureServiceTokenProvider">
+            <summary>
+            Used to acquire token using asymmetric key associated with an Azure AD application.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.ClientCertificateAzureServiceTokenProvider.#ctor(System.String,System.String,System.Boolean,System.String,System.String,System.String,Microsoft.Azure.Services.AppAuthentication.IAuthenticationContext)">
+            <summary>
+            Creates instance of ClientCertificateAzureServiceTokenProvider class.
+            </summary>
+            <param name="clientId"></param>
+            <param name="certificateSubjectNameOrThumbprint"></param>
+            <param name="isThumbprint"></param>
+            <param name="storeLocation"></param>
+            <param name="azureAdInstance"></param>
+            <param name="authenticationContext"></param>
+            <param name="tenantId"></param>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.ClientCertificateAzureServiceTokenProvider.GetTokenAsync(System.String,System.String)">
+            <summary>
+            Get access token using asymmetric key associated with an Azure AD application.
+            </summary>
+            <param name="resource">Resource to access.</param>
+            <param name="authority">Authority where resource is.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.ConnectionString.Parse(System.String,System.String)">
+            <summary>
+            Returns a specific token provider based on authentication option specified in the connection string. 
+            </summary>
+            <param name="connectionString">Connection string with authentication option and related parameters.</param>
+            <param name="azureAdInstance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.ConnectionString.ValidateAttributes(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            Throws an exception if none of the attributes are in the connection string
+            </summary>
+            <param name="connectionSettings">List of key value pairs in the connection string</param>
+            <param name="attributes">List of attributes to test</param>
+            <param name="connectionString">The connection string specified</param>
+        </member>
+        <member name="T:Microsoft.Azure.Services.AppAuthentication.NonInteractiveAzureServiceTokenProviderBase">
+            <summary>
+            Base class from which other token providers derive. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Services.AppAuthentication.Principal">
+            <summary>
+            Information about the principal used to get the token.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Services.AppAuthentication.Principal.IsAuthenticated">
+            <summary>
+            Will be false if token has not been acquired
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Services.AppAuthentication.Principal.Type">
+            <summary>
+            Either User or App
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Services.AppAuthentication.Principal.UserPrincipalName">
+            <summary>
+            If Type is User, the user's UserPrincipalName
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Services.AppAuthentication.Principal.AppId">
+            <summary>
+            If Type is App, the App Id used
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Services.AppAuthentication.Principal.TenantId">
+            <summary>
+            Tenant the token was acquired from
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Services.AppAuthentication.Principal.CertificateThumbprint">
+            <summary>
+            If Type is App, the App credential's thumbprint
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.Principal.ToString">
+            <summary>
+            Returns a representation of the principal with non-null fields
+            </summary>
+            <returns>The representation of this <see cref="T:Microsoft.Azure.Services.AppAuthentication.Principal"/> that includes all non-null fields</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.TokenResponse.Parse(System.String)">
+            <summary>
+            Parse token response returned from OAuth provider.
+            While more fields are returned, we only need the access token. 
+            </summary>
+            <param name="tokenResponse">This is the response received from OAuth endpoint that has the access token in it.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.Azure.Services.AppAuthentication.WindowsAuthenticationAzureServiceTokenProvider">
+            <summary>
+            Uses Integrated Windows Authentication to get access token. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Services.AppAuthentication.WindowsAuthenticationAzureServiceTokenProvider.GetTokenAsync(System.String,System.String)">
+            <summary>
+            Get access token by authenticating to Azure AD using Integrated Windows Authentication (IWA), 
+            when domain is synced with Azure AD tenant. 
+            </summary>
+            <param name="resource">Resource to access.</param>
+            <param name="authority">Authority where resource is present.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
