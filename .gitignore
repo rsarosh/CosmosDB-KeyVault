@@ -1,0 +1,6 @@
+packages/
+/packages/
+src/bin/
+src/obj/
+WebAppKeyVault/.vs/
+WebAppKeyVault/WebAppKeyVault/bin/
